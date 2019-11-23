@@ -1,18 +1,31 @@
 const express = require("express");
-
+const path = require("path");
 const app = express();
+const AlphaVantage = require("./alpha-vantage.js");
 
-app.set("port", (process.env.PORT || 3000));
+app
+    .use(express.static(path.join(__dirname, "public")))
+    .set("port", (process.env.PORT || 3000))
+    .set("views", path.join(__dirname, "views"))
+    .set("view engine", "ejs")
+    .get("/", (req, res) => res.render("index"))
+    .get("/search", searchSymbol)
+    .listen(app.get("port"), () => {
+        console.log(`The server is listening on port ${app.get("port")}`);
+    });
 
-app.get("/", getData);
+function searchSymbol(req, res) {
 
-app.listen(app.get("port"), () => {
-    console.log(`The server is listening on port ${app.get("port")}`);
-});
+    if (req.query.keyword === "") {
+        res.status(500).send("Invalid keyword.");
+        return;
+    }
 
-function getData(req, res) {
-    console.log("Getting data.");
+    const model = new AlphaVantage();
 
-    res.json({ name: "Jonhn" });
-    res.end();
+    model.searchSymbol(req.query.keyword, result => {
+        res.json(result);
+        res.end();
+    });
+
 }
