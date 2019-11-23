@@ -1,6 +1,6 @@
 const url = window.location.hostname.startsWith("localhost")
     ? "http://localhost:3000"
-    : "https://enigmatic-headland-55249.herokuapp.com/";
+    : "https://enigmatic-headland-55249.herokuapp.com";
 
 $(document).ready(() => {
     const companies = new Bloodhound({
