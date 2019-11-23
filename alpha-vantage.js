@@ -7,6 +7,11 @@ module.exports = class AlphaVantage {
         this.key = "1VHN4J9EMO1GPG5O";
     }
 
+    /**
+     * Generic method to prepare an API request
+     * @param {Object} data 
+     * @param {Function} handler 
+     */
     _makeRequest(data, handler) {
         axios
             .get(
@@ -14,7 +19,6 @@ module.exports = class AlphaVantage {
                 querystring.stringify(data)
             )
             .then(response => {
-                console.log(response.data);
                 handler(response.data);
             })
             .catch(error => {
@@ -22,7 +26,12 @@ module.exports = class AlphaVantage {
             });
     }
 
-    searchSymbol(keyword, handler) {
+    /**
+     * Send request to API
+     * @param {String} keyword 
+     * @param {Function} handler 
+     */
+    symbolSearch(keyword, handler) {
         const data = {
             function: "SYMBOL_SEARCH",
             apikey: this.key,

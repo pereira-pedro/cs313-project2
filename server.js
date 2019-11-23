@@ -9,12 +9,17 @@ app
     .set("views", path.join(__dirname, "views"))
     .set("view engine", "ejs")
     .get("/", (req, res) => res.render("index"))
-    .get("/search", searchSymbol)
+    .get("/query", queryKeyword)
     .listen(app.get("port"), () => {
         console.log(`The server is listening on port ${app.get("port")}`);
     });
 
-function searchSymbol(req, res) {
+/**
+ * Query API a keyword (name or symbol)
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+function queryKeyword(req, res) {
 
     if (req.query.keyword === "") {
         res.status(500).send("Invalid keyword.");
@@ -23,7 +28,7 @@ function searchSymbol(req, res) {
 
     const model = new AlphaVantage();
 
-    model.searchSymbol(req.query.keyword, result => {
+    model.symbolSearch(req.query.keyword, result => {
         res.json(result);
         res.end();
     });

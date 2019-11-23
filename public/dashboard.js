@@ -7,7 +7,7 @@ $(document).ready(() => {
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: `${url}/search?keyword=%QUERY`,
+            url: `${url}/query?keyword=%QUERY`,
             wildcard: '%QUERY',
             transform: (data) => {
                 var newData = [];
