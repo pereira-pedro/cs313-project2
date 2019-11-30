@@ -141,18 +141,18 @@ function createCompanyObject(container, symbol, name) {
 
     $('<li />', {
         'class': 'nav-item',
-        'data-symbol': symbol,
-        'data-name': name
     })
         .append($('<a />', {
             'class': 'nav-link company',
             'href': '#',
+            'data-symbol': symbol,
+            'data-name': name,
             'text': name
+        }).click(function () {
+            selectCompany($(this).data('symbol'), $(this).data('name'));
         })
         )
-        .click(() => {
-            //selectCompany($(this).data('symbol'), $(this).data('name'));
-        })
+
         .appendTo(container);
 
 }
