@@ -3,6 +3,47 @@ const url = window.location.hostname.startsWith("localhost")
     : "https://enigmatic-headland-55249.herokuapp.com";
 
 $(document).ready(() => {
+    const userId = localStorage.getItem("user_id");
+
+    if (typeof userId !== "undefined" && userId !== null) {
+        $.get(url + '/retrieve', {
+            id: userId
+        },
+        )
+            .done((result) => {
+                if (typeof result !== "undefined") {
+                    $("#user-email").val(result.email);
+                    createCompanyList(result.stocks);
+                }
+            })
+            .fail((result) => {
+                console.log(JSON.stringify(result));
+            });
+    }
+
+    $("#user-email").change(() => {
+        const email = $("#user-email").val()
+        $.get(url + '/retrieve', {
+            email: email
+        },
+        )
+            .done((result) => {
+                if (typeof result !== "undefined") {
+                    $("#user-email").val(result.email);
+                    localStorage.setItem("user_id", result.id);
+                    createCompanyList(result.stocks);
+                }
+            })
+            .fail((result) => {
+                Swal.fire({
+                    title: 'Error',
+                    text: result.responseText,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            });
+
+    });
     const companies = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -44,14 +85,87 @@ $(document).ready(() => {
     });
 
     c.bind('typeahead:select', (ev, item) => {
-        const placeholder = $("#company-id");
+        selectCompany(item.value, item.name);
+    });
 
-        placeholder.html(item.name);
-        placeholder.data('id', item.value);
+    $("#btn-save-email").click(() => {
+        const c = $("#company-id");
+        const email = $("#user-email").val();
 
-        //$(ev.currentTarget.id).val('');
+        if (email === '') {
+            Swal.fire({
+                title: 'Error',
+                text: "You need to inform your email.",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+
+        $.post(url + '/save', {
+            stock_name: c.text(),
+            stock_symbol: c.data('id'),
+            email: email
+        },
+        )
+            .done((result) => {
+                localStorage.setItem("user_id",
+                    result.id);
+                createCompanyList(result.stocks);
+            })
+            .fail((result) => {
+                Swal.fire({
+                    title: 'Error',
+                    text: result.responseText,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            });
     });
 });
+
+function createCompanyList(stocks) {
+
+    if (stocks.length <= 0) {
+        return;
+
+    }
+    const list = $('#company-list');
+    list.empty();
+    stocks.forEach((row, idx) => {
+        createCompanyObject(list, row.symbol, row.name);
+    });
+
+}
+function createCompanyObject(container, symbol, name) {
+
+    $('<li />', {
+        'class': 'nav-item',
+        'data-symbol': symbol,
+        'data-name': name
+    })
+        .append($('<a />', {
+            'class': 'nav-link company',
+            'href': '#',
+            'text': name
+        })
+        )
+        .click(() => {
+            //selectCompany($(this).data('symbol'), $(this).data('name'));
+        })
+        .appendTo(container);
+
+}
+
+
+function selectCompany(symbol, name) {
+    const placeholder = $("#company-id");
+
+    placeholder.html(name);
+    placeholder.data('id', symbol);
+
+    $("#ope-selector").removeClass("invisible").addClass("visible");
+}
 /*
 
 (function () {

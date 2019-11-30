@@ -35,19 +35,26 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><img src="logo.png" width="83" height="41"></a>
-    <div class="w-100">
-      <input id="company" class="typeahead form-control form-control-dark w-100 ml-2" type="text"
-        placeholder="Search the company here" aria-label="Search" autocomplete="off">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#"><img src="logo.png" width="83" height="41"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="d-flex flex-grow-1">
+        <form class="mr-2 my-auto w-100 d-inline-block order-1">
+          <input id="company" class="typeahead form-control form-control-dark mr-2" type="text"
+            placeholder="Search the company here" aria-label="Search" autocomplete="off">
+        </form>
+      </div>
+      <form class="form-inline my-2 my-lg-0">
+        <input type="email" id="user-email" placeholder="Enter email to save"
+          class="form-control form-control-dark mr-sm-2" aria-describedby="user-email-helper">
+        <button id="btn-save-email" class="btn btn-primary my-2 my-sm-0">Save</button>
+      </form>
     </div>
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link" href="#"><i class="material-icons">
-            account_circle
-          </i></a>
-      </li>
-    </ul>
   </nav>
 
   <div class="container-fluid">
@@ -58,53 +65,33 @@
           <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             Saved Companies
           </h5>
-          <ul class="nav flex-column mb-2">
-            <li class="nav-item">
+          <ul id="company-list" class="nav flex-column mb-2">
+            <!--<li class="nav-item">
               <a class="nav-link company" href="#">
                 <i class="material-icons">
                   insert_drive_file
                 </i>
                 Company 1
               </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link company" href="#">
-                <i class="material-icons">
-                  insert_drive_file
-                </i>
-                Company 2
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link company" href="#">
-                <i class="material-icons">
-                  insert_drive_file
-                </i>
-                Company 3
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link company" href="#">
-                <i class="material-icons">
-                  insert_drive_file
-                </i>
-                Company 4
-              </a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </nav>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mt-3 border-bottom">
-          <h1 class="h2" id="company-id" data-id="">Name of Company</h1>
+        <div id="ope-selector"
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mt-3 border-bottom invisible">
+          <h1 class="h2" id="company-id" data-id=""></h1>
           <div class="btn-toolbar mb-2 mb-md-0">
             <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle operation">
               <i class="material-icons">
                 date_range
               </i>
               This week
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary"> <i class="material-icons">
+                save
+              </i>
             </button>
           </div>
         </div>
@@ -125,6 +112,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="dashboard.js"></script>
 </body>
 
