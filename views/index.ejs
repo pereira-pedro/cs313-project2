@@ -83,12 +83,16 @@
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mt-3 border-bottom invisible">
           <h1 class="h2" id="company-id" data-id=""></h1>
           <div class="btn-toolbar mb-2 mb-md-0">
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle operation">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle operation"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btn-chart">
               <i class="material-icons">
                 date_range
               </i>
-              This week
+              Show Chart
             </button>
+            <div id="chart-options" class="dropdown-menu" aria-labelledby="btn-chart">
+              <a class="dropdown-item" href="#" data-method="intraDay">Today</a>
+            </div>
             <button type="button" class="btn btn-sm btn-outline-secondary"> <i class="material-icons">
                 delete
               </i>
@@ -96,7 +100,7 @@
           </div>
         </div>
 
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+        <div id="chart"></div>
 
       </main>
     </div>
@@ -109,9 +113,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.8.6/apexcharts.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="dashboard.js"></script>
 </body>

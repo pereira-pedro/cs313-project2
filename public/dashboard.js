@@ -44,6 +44,26 @@ $(document).ready(() => {
             });
 
     });
+
+    $("#chart-options > .dropdown-item").click(function () {
+        $.getJSON(url + '/stock', {
+            symbol: $('#company-id').data('id'),
+            interval: '5min',
+            method: $(this).data('method')
+        },
+        )
+            .done((result) => {
+                drawChart(result);
+            })
+            .fail((result) => {
+                Swal.fire({
+                    title: 'Error',
+                    text: result.responseText,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            });
+    });
     const companies = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -166,54 +186,40 @@ function selectCompany(symbol, name) {
 
     $("#ope-selector").removeClass("invisible").addClass("visible");
 }
-/*
 
-(function () {
-    'use strict'
 
-    // Graphs
-    var ctx = document.getElementById('myChart')
-    // eslint-disable-next-line no-unused-vars
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday'
-            ],
-            datasets: [{
-                data: [
-                    15339,
-                    21345,
-                    18483,
-                    24003,
-                    23489,
-                    24092,
-                    12034
-                ],
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#007bff',
-                borderWidth: 4,
-                pointBackgroundColor: '#007bff'
-            }]
+function drawChart(data) {
+    console.log(JSON.stringify(data.series))
+    const options = {
+        chart: {
+            height: 450,
+            type: 'candlestick',
         },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
-            },
-            legend: {
-                display: false
+        candlestick: {
+            colors: {
+                upward: '#4caf50',
+                downward: '#f44336'
+            }
+        },
+        series: data.series,
+        title: {
+            text: data.metadata.information,
+            align: 'left'
+        },
+        xaxis: {
+            type: 'datetime'
+        },
+        yaxis: {
+            tooltip: {
+                enabled: true
             }
         }
-    })
-}())*/
+    }
+
+    var chart = new ApexCharts(
+        document.querySelector("#chart"),
+        options
+    );
+
+    chart.render();
+}

@@ -15,6 +15,7 @@ app
     .get("/", (req, res) => res.render("index"))
     .get("/query", queryKeyword)
     .get("/retrieve", listStocks)
+    .get("/stock", queryData)
     .post("/save", saveStock)
     .listen(app.get("port"), () => {
         console.log(`The server is listening on port ${app.get("port")}`);
@@ -38,6 +39,42 @@ function queryKeyword(req, res) {
         res.json(result);
         res.end();
     });
+}
+
+/**
+ * Query API intraday stock data
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+function queryData(req, res) {
+
+    if (req.query.symbol === "") {
+        res.status(500).send("Invalid symbol.");
+        return;
+    }
+
+    if (req.query.interval === "") {
+        res.status(500).send("Invalid interval.");
+        return;
+    }
+
+    if (req.query.method === "") {
+        res.status(500).send("Invalid method.");
+        return;
+    }
+
+    try {
+
+        const model = new AlphaVantage();
+        model[`${req.query.method}Data`](req.query.symbol, req.query.interval, result => {
+            res.json(result);
+            res.end();
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+
+    }
+
 }
 
 function saveStock(req, res) {
