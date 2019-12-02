@@ -64,6 +64,7 @@ $(document).ready(() => {
                 });
             });
     });
+
     const companies = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
